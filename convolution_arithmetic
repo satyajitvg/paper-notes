@@ -1,0 +1,55 @@
+https://arxiv.org/pdf/1603.07285.pdf
+
+### Affine transformtaion v/s Discrete convolutions
+- Affine transformations: flattened vector is multiplied by Matrix to product output. To this,  bias can 
+be added before passing through a non linearity
+  -> all channels trated the same, structurual information is not preserved
+- Discrete convolutions:
+  -> structural information in channels preserved
+  -> sparse connections: only few input units correspond to each output unit 
+  -> conv kernel reused: same weights applied to multiple locations in image
+  
+ ### Output volume size, depends on
+   -> height * width of input
+   -> num_channels in input == num_channels in kernel
+   -> padding
+   -> stride
+   -> conv kernel size k
+   -> num of kernels == num_channels in output
+   
+   Assuming square input (height == width)
+   op_w = op_h = floor((i + 2p - k)/s) + 1
+   The +1 , accounts for the initial position of the kernel
+   
+   3. strides imply subsampling
+   convolving with stride = 2, is equivalent to conv with stride = 1, but skipping values in input
+   
+            
+### Convolution as a matrix operation
+
+Equivalent of image 4x4 image convolved with 3x3 kernel
+
+4x16 sparse conv Matrix multiplied by 16x1 input vector flattened = 4x1 op shape, reshaped into 2x2 volume
+4x16 Conv matrix is sparse
+
+### Transposed convolution
+Usage : recover input from output
+
+Transpose conv is then , C.T * op
+16x4 * 4x1 = 16x1
+
+This is what happens in the backward pass of convolution
+
+### Transposed convolution with unit strides
+conv matrix shape = (k, k)
+Equivalent to padding with (k-1) zeros and then applying standard convolution
+
+### Transposed convolution with strides > 1
+a.k.a Fractionally strided convolution
+Equivalent to padding with (k-1) zeros AND inserting (s-1) zeros between input and then applying convolution
+Makes the kernel move at a slower pace then with unit stride
+  
+### Dilated convolutions , Atrous conv
+deeplabv3 uses this
+When : Cheaply, Increase receptive field of kernel
+zeros inserted between kernel elements
