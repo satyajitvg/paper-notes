@@ -9,13 +9,13 @@ be added before passing through a non linearity
   -> sparse connections: only few input units correspond to each output unit 
   -> conv kernel reused: same weights applied to multiple locations in image
   
- ### Output volume size, depends on
-   -> height * width of input
-   -> num_channels in input == num_channels in kernel
-   -> padding
-   -> stride
-   -> conv kernel size k
-   -> num of kernels == num_channels in output
+### Output volume size, depends on
+ -> height * width of input
+ -> num_channels in input == num_channels in kernel
+ -> padding
+ -> stride
+ -> conv kernel size k
+ -> num of kernels == num_channels in output
    
    Assuming square input (height == width)
    op_w = op_h = floor((i + 2p - k)/s) + 1
